@@ -8,7 +8,7 @@ const Methods = {
     const getBridgeIp = this.getBridgeIp();
 
     const parseIp = function parseIp(response) {
-      const ipAddress = JSON.parse(response)[0].internaliaddress;
+      const ipAddress = JSON.parse(response)[0].internalipaddress;
 
       return ipAddress;
     }
@@ -16,7 +16,7 @@ const Methods = {
     const createUserRequest = function createUserRequest(ipAddress) {
 
       if (!ipAddress) {
-        throw new Error('Could not retrieve ip address.');
+        throw new Error('Failure retrieving ip address.');
       }
 
       let opts = {
@@ -29,19 +29,24 @@ const Methods = {
       return request.post(opts);
     }
 
-    const parseUserId = function parseUserId(response) {
-      const userId = JSON.parse(response);
+    const parseUserId = function parseUserId(res) {
+
+      if (res && res[0] && res[0].error) {
+        throw new Error('Failure retrieving username.');
+      }
 
       return userId;
     }
 
-    const saveUserId = function saveUserId(id) {
+    const saveUsername = function saveUsername(username) {
 
-      if (!id) {
-        throw new Error("Customer id is undefined.");
+      if (!username) {
+        throw new Error("User id is undefined.");
       }
 
-      return id;
+      process.env.USERNAME = username;
+
+      return { success: `user ${username} successfully created`};
     }
 
 
@@ -49,7 +54,7 @@ const Methods = {
       .then(parseIp)
       .then(createUserRequest)
       .then(parseUserId)
-      .then(saveUserId)
+      .then(saveUsername)
       .catch(error => {
         throw error;
       });
