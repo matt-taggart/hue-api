@@ -29,14 +29,27 @@ const Methods = {
       return request.post(opts);
     }
 
-    const parseUserId = function saveUserId(response) {
-      const usserId = JSON.parse(response)
+    const parseUserId = function parseUserId(response) {
+      const userId = JSON.parse(response);
+
+      return userId;
     }
+
+    const saveUserId = function saveUserId(id) {
+
+      if (!id) {
+        throw new Error("Customer id is undefined.");
+      }
+
+      return id;
+    }
+
 
     return getBridgeIp
       .then(parseIp)
       .then(createUserRequest)
-      // .then(saveUserId)
+      .then(parseUserId)
+      .then(saveUserId)
       .catch(error => {
         throw error;
       });
