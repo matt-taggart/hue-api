@@ -1,7 +1,12 @@
-const fs = require('fs');
-const app = process.argv[2];
+const request = require('request-promise'),
+      fs = require('fs-promise'),
+      app = process.argv[2];
 
-const getBridgeIp = function getBridgeIp() {
+if (!app) {
+  throw new Error("Must provide app name as command line argument.");
+}
+
+const getBridgeIp = function getBridgeIp  () {
   return request.get('https://www.meethue.com/api/nupnp');
 };
 
@@ -11,18 +16,11 @@ const parseIp = function parseIp(response) {
   return ip;
 };
 
-const createUserRequest = function createUserRequest(ip, app) {
+const createUserRequest = function createUserRequest(ip) {
 
   if (!ip) {
     throw new Error('Failure retrieving ip address.');
   }
-
-  const entry = `IP=${ip}`
-
-  fs.appendFile('.env', entry, (err) => {
-    if (err) throw err;
-    console.log('IP saved!');
-  });
 
   let params = {
     method: 'POST',
@@ -31,39 +29,49 @@ const createUserRequest = function createUserRequest(ip, app) {
     json: true
   };
 
-  return request.post(params);
+  return Promise.all([ request.post(params), ip ]);
 };
 
-const parseUserId = function parseUserId(res) {
+const parseUsername = function parseUserId(res) {
+  let response = res[0],
+      ip = res[1];
 
-  if (res && res[0] && res[0].error) {
-    throw new Error(`Failure retrieving username: "${res[0].error}"`);
+  if (response && response[0] && response[0].error) {
+    throw new Error(`Failure retrieving username. Please press the button on the bridge and try again.`);
   }
 
-  const userId = res[0].success.username;
+  const username = response[0].success.username;
 
-  return userId;
+  return { username, ip };
 };
 
-const saveUsername = function saveUsername(username) {
+const saveInfo = function saveInfo(results) {
+
+  let username = results.username,
+      ip = results.ip;
 
   if (!username) {
     throw new Error("User id is undefined.");
   }
 
-  const entry = `USERNAME=${username}`;
+  let entry = `IP_ADDRESS=${ip}\nUSERNAME=${username}`;
 
-  fs.appendFile('.env', entry, (err) => {
-    if (err) throw err;
-    console.log('Username saved!');
-  });
+  return Promise.all([ fs.writeFile('.env', entry), username, ip ]);
+};
+
+const success = function success(results) {
+  let username = results[1],
+      ip = results[2];
+
+  console.log(`Successfully created .env file with username ${username} and ip address ${ip}.`);
 };
 
 getBridgeIp()
   .then(parseIp)
   .then(createUserRequest)
-  .then(parseUserId)
-  .then(saveUsername)
+  .then(parseUsername)
+  .then(saveInfo)
+  .then(success)
   .catch(err => {
     throw err;
   });
