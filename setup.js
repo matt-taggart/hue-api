@@ -54,7 +54,8 @@ const saveInfo = function saveInfo(results) {
     throw new Error("User id is undefined.");
   }
 
-  let entry = `IP_ADDRESS=${ip}\nUSERNAME=${username}`;
+  let entry = `IP_ADDRESS=${ip} \n` +
+              `USERNAME=${username}`;
 
   return Promise.all([ fs.writeFile('.env', entry), username, ip ]);
 };
