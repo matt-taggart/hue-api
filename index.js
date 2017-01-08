@@ -1,6 +1,5 @@
 const request = require('request-promise');
 
-
 const Hue = {
   config(input) {
     this.ip = input.ip;
