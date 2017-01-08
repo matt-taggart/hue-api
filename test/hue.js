@@ -74,4 +74,63 @@ describe('Testing Hue API', function() {
       });
   });
 
+  it.skip('Should turn set colors of light 1', function(done) {
+    let Hue = require('./../index.js');
+
+    Hue.config({
+      ip: process.env.IP_ADDRESS,
+      username: process.env.USERNAME
+    });
+
+    let options = {
+      id: 1,
+      sat: 254,
+      bri: 254,
+      hue: 50000
+    };
+
+    return Hue.setColor(options)
+      .then(results => {
+        console.log(results);
+        let expected = [
+          { success: { '/lights/1/state/hue': 50000 } },
+          { success: { '/lights/1/state/sat': 254 } },
+          { success: { '/lights/1/state/bri': 254 } }
+        ];
+
+        assert.deepEqual(results, expected);
+        done();
+      });
+  });
+
+  it('Should turn off all lights', function(done) {
+    let Hue = require('./../index.js');
+
+    Hue.config({
+      ip: process.env.IP_ADDRESS,
+      username: process.env.USERNAME
+    });
+
+    return Hue.turnOffAll()
+      .then(result => {
+        assert.equal(result, 'All lights successfully turned off.');
+        done();
+      });
+  });
+
+  it.only('Should turn on all lights', function(done) {
+    let Hue = require('./../index.js');
+
+    Hue.config({
+      ip: process.env.IP_ADDRESS,
+      username: process.env.USERNAME
+    });
+
+    return Hue.turnOnAll()
+      .then(result => {
+        assert.equal(result, 'All lights successfully turned on.');
+        done();
+      });
+  });
+
 });
