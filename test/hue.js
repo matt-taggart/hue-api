@@ -83,10 +83,10 @@ describe('Testing Hue API', function() {
     });
 
     let options = {
-      id: 1,
+      id: 3,
       sat: 254,
       bri: 254,
-      hue: 50000
+      hue: 1000
     };
 
     return Hue.setColor(options)
@@ -103,7 +103,7 @@ describe('Testing Hue API', function() {
       });
   });
 
-  it('Should turn set colors of lights 1, 2, and 3', function(done) {
+  it.only('Should turn set colors of lights 1, 2, and 3', function(done) {
     let Hue = require('./../index.js');
 
     Hue.config({
