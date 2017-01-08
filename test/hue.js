@@ -40,4 +40,38 @@ describe('Testing Hue API', function() {
       });
   });
 
+  it('Should turn on light with id of 1', function(done) {
+    let Hue = require('./../index.js');
+
+    Hue.config({
+      ip: process.env.IP_ADDRESS,
+      username: process.env.USERNAME
+    });
+
+    return Hue.turnOn(1)
+      .then(results => {
+        let expected = [ { success: { '/lights/1/state/on': true } } ];
+
+        assert.deepEqual(results, expected);
+        done();
+      });
+  });
+
+  it('Should turn off light with id of 1', function(done) {
+    let Hue = require('./../index.js');
+
+    Hue.config({
+      ip: process.env.IP_ADDRESS,
+      username: process.env.USERNAME
+    });
+
+    return Hue.turnOff(1)
+      .then(results => {
+        let expected = [ { success: { '/lights/1/state/on': false } } ];
+
+        assert.deepEqual(results, expected);
+        done();
+      });
+  });
+
 });

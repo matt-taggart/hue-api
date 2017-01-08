@@ -29,7 +29,7 @@ const createUserRequest = function createUserRequest(ip) {
     json: true
   };
 
-  return Promise.all([ request.post(params), ip ]);
+  return Promise.all([ request(params), ip ]);
 };
 
 const parseUsername = function parseUserId(res) {
@@ -54,7 +54,7 @@ const saveInfo = function saveInfo(results) {
     throw new Error("User id is undefined.");
   }
 
-  let entry = `IP_ADDRESS=${ip} \n` +
+  let entry = `IP_ADDRESS=${ip}\n` +
               `USERNAME=${username}`;
 
   return Promise.all([ fs.writeFile('.env', entry), username, ip ]);
