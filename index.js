@@ -19,13 +19,32 @@ const Hue = {
       return lights;
     }
 
-
     return requestLights()
       .then(parseResponse)
       .catch(err => {
         throw err;
       });
 
+  },
+  getLightById(id) {
+
+    const requestLight = (id) => {
+      const url = `http://${this.ip}/api/${this.username}/lights/${id}`;
+
+      return request(url);
+    }
+
+    const parseResponse = (response) => {
+      let lights = JSON.parse(response);
+
+      return lights;
+    }
+
+    return requestLight(id)
+      .then(parseResponse)
+      .catch(err => {
+        throw err;
+      });
   }
 }
 

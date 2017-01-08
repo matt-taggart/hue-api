@@ -3,7 +3,7 @@ const assert = require('chai').assert;
 describe('Testing Hue API', function() {
 
   before(function() {
-    require('dotenv').config();
+    require('dotenv').config({ silent: false });
   });
 
   it('Should get all lights', function(done) {
@@ -22,6 +22,22 @@ describe('Testing Hue API', function() {
         done();
       });
 
+  });
+
+  it('Should get light by id', function(done) {
+    let Hue = require('./../index.js');
+
+    Hue.config({
+      ip: process.env.IP_ADDRESS,
+      username: process.env.USERNAME
+    });
+
+    return Hue.getLightById(1)
+      .then(results => {
+        assert.property(results, 'state');
+        assert.deepProperty(results, 'state.on');
+        done();
+      });
   });
 
 });
