@@ -74,7 +74,7 @@ describe('Testing Hue API', function() {
       });
   });
 
-  it.skip('Should turn set colors of light 1', function(done) {
+  it('Should set colors of light 1', function(done) {
     let Hue = require('./../index.js');
 
     Hue.config({
@@ -103,6 +103,28 @@ describe('Testing Hue API', function() {
       });
   });
 
+  it('Should turn set colors of lights 1, 2, and 3', function(done) {
+    let Hue = require('./../index.js');
+
+    Hue.config({
+      ip: process.env.IP_ADDRESS,
+      username: process.env.USERNAME
+    });
+
+    let options = {
+      id: [1, 2, 3],
+      sat: 254,
+      bri: 254,
+      hue: 50000
+    };
+
+    return Hue.setColor(options)
+      .then(result => {
+        assert.equal(result, 'Successfully changed lights.');
+        done();
+      });
+  });
+
   it('Should turn off all lights', function(done) {
     let Hue = require('./../index.js');
 
@@ -118,7 +140,7 @@ describe('Testing Hue API', function() {
       });
   });
 
-  it.only('Should turn on all lights', function(done) {
+  it('Should turn on all lights', function(done) {
     let Hue = require('./../index.js');
 
     Hue.config({
