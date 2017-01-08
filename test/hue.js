@@ -10,7 +10,7 @@ describe('Testing Hue API', function() {
     let Hue = require('./../index.js');
 
     Hue.config({
-      ip: process.env.IP_ADDRESS,
+      ip: process.env.IP,
       username: process.env.USERNAME
     });
 
@@ -28,7 +28,7 @@ describe('Testing Hue API', function() {
     let Hue = require('./../index.js');
 
     Hue.config({
-      ip: process.env.IP_ADDRESS,
+      ip: process.env.IP,
       username: process.env.USERNAME
     });
 
@@ -44,7 +44,7 @@ describe('Testing Hue API', function() {
     let Hue = require('./../index.js');
 
     Hue.config({
-      ip: process.env.IP_ADDRESS,
+      ip: process.env.IP,
       username: process.env.USERNAME
     });
 
@@ -61,7 +61,7 @@ describe('Testing Hue API', function() {
     let Hue = require('./../index.js');
 
     Hue.config({
-      ip: process.env.IP_ADDRESS,
+      ip: process.env.IP,
       username: process.env.USERNAME
     });
 
@@ -78,7 +78,7 @@ describe('Testing Hue API', function() {
     let Hue = require('./../index.js');
 
     Hue.config({
-      ip: process.env.IP_ADDRESS,
+      ip: process.env.IP,
       username: process.env.USERNAME
     });
 
@@ -107,7 +107,7 @@ describe('Testing Hue API', function() {
     let Hue = require('./../index.js');
 
     Hue.config({
-      ip: process.env.IP_ADDRESS,
+      ip: process.env.IP,
       username: process.env.USERNAME
     });
 
@@ -129,7 +129,7 @@ describe('Testing Hue API', function() {
     let Hue = require('./../index.js');
 
     Hue.config({
-      ip: process.env.IP_ADDRESS,
+      ip: process.env.IP,
       username: process.env.USERNAME
     });
 
@@ -144,7 +144,7 @@ describe('Testing Hue API', function() {
     let Hue = require('./../index.js');
 
     Hue.config({
-      ip: process.env.IP_ADDRESS,
+      ip: process.env.IP,
       username: process.env.USERNAME
     });
 
