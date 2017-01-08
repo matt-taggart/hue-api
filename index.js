@@ -7,11 +7,27 @@ const Hue = {
     this.username = input.username;
   },
   getLights() {
-    const url = `http://${this.ip}/api/${this.username}/lights`;
 
-    return request(url);
-  },
+    const requestLights = () => {
+      const url = `http://${this.ip}/api/${this.username}/lights`;
 
+      return request(url);
+    }
+
+    const parseResponse = (response) => {
+      let lights = JSON.parse(response);
+
+      return lights;
+    }
+
+
+    return requestLights()
+      .then(parseResponse)
+      .catch(err => {
+        throw err;
+      });
+
+  }
 }
 
 module.exports = Object.create(Hue);
