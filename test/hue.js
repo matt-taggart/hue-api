@@ -103,7 +103,7 @@ describe('Testing Hue API', function() {
       });
   });
 
-  it.only('Should turn set colors of lights 1, 2, and 3', function(done) {
+  it('Should turn set colors of lights 1, 2, and 3', function(done) {
     let Hue = require('./../index.js');
 
     Hue.config({
