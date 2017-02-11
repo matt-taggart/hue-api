@@ -1,18 +1,22 @@
 const assert = require('chai').assert;
+const Hue = require('./../index.js');
 
 describe('Testing Hue API', function() {
+
+  let hue;
 
   before(function() {
     require('dotenv').config({ silent: false });
   });
 
-  it.only('Should get all lights', function(done) {
-    const Hue = require('./../index.js');
-    const hue = Hue({
+  beforeEach(function() {
+    hue = Hue({
       ip: process.env.IP,
       username: process.env.USERNAME
     });
+  });
 
+  it('Should get all lights', function(done) {
     return hue.getLights()
       .then(results => {
         assert.property(results, '1');
@@ -20,19 +24,10 @@ describe('Testing Hue API', function() {
         assert.deepProperty(results, '1.state.on');
         done();
       });
-
   });
 
   it('Should get light by id', function(done) {
-    const hue = require('./../index.js');
-    const Hue = hue();
-
-    Hue.config({
-      ip: process.env.IP,
-      username: process.env.USERNAME
-    });
-
-    return Hue.getLightById(1)
+    return hue.getLightById(1)
       .then(results => {
         assert.property(results, 'state');
         assert.deepProperty(results, 'state.on');
@@ -41,15 +36,7 @@ describe('Testing Hue API', function() {
   });
 
   it('Should turn on light with id of 1', function(done) {
-    const hue = require('./../index.js');
-    const Hue = hue();
-
-    Hue.config({
-      ip: process.env.IP,
-      username: process.env.USERNAME
-    });
-
-    return Hue.turnOn(1)
+    return hue.turnOn(1)
       .then(results => {
         let expected = [ { success: { '/lights/1/state/on': true } } ];
 
@@ -58,43 +45,18 @@ describe('Testing Hue API', function() {
       });
   });
 
-  it('Should turn off light with id of 1', function(done) {
-    let Hue = require('./../index.js');
-
-    Hue.config({
-      ip: process.env.IP,
-      username: process.env.USERNAME
-    });
-
-    return Hue.turnOff(1)
-      .then(results => {
-        let expected = [ { success: { '/lights/1/state/on': false } } ];
-
-        assert.deepEqual(results, expected);
-        done();
-      });
-  });
-
   it('Should set colors of light 1', function(done) {
-    let hue = require('./../index.js');
-
-    Hue.config({
-      ip: process.env.IP,
-      username: process.env.USERNAME
-    });
-
     let options = {
-      id: 3,
+      id: 1,
       sat: 254,
       bri: 254,
       hue: 1000
     };
 
-    return Hue.setColor(options)
+    return hue.setColor(options)
       .then(results => {
-        console.log(results);
         let expected = [
-          { success: { '/lights/1/state/hue': 50000 } },
+          { success: { '/lights/1/state/hue': 1000 } },
           { success: { '/lights/1/state/sat': 254 } },
           { success: { '/lights/1/state/bri': 254 } }
         ];
@@ -104,14 +66,17 @@ describe('Testing Hue API', function() {
       });
   });
 
+  it('Should turn off light with id of 1', function(done) {
+    return hue.turnOff(1)
+      .then(results => {
+        let expected = [ { success: { '/lights/1/state/on': false } } ];
+
+        assert.deepEqual(results, expected);
+        done();
+      });
+  });
+
   it('Should turn set colors of lights 1, 2, and 3', function(done) {
-    let Hue = require('./../index.js');
-
-    Hue.config({
-      ip: process.env.IP,
-      username: process.env.USERNAME
-    });
-
     let options = {
       id: [1, 2, 3],
       sat: 254,
@@ -119,7 +84,7 @@ describe('Testing Hue API', function() {
       hue: 50000
     };
 
-    return Hue.setColor(options)
+    return hue.setColor(options)
       .then(result => {
         assert.equal(result, 'Successfully changed lights.');
         done();
@@ -127,14 +92,7 @@ describe('Testing Hue API', function() {
   });
 
   it('Should turn off all lights', function(done) {
-    let Hue = require('./../index.js');
-
-    Hue.config({
-      ip: process.env.IP,
-      username: process.env.USERNAME
-    });
-
-    return Hue.turnOffAll()
+    return hue.turnOffAll()
       .then(result => {
         assert.equal(result, 'All lights successfully turned off.');
         done();
@@ -142,14 +100,7 @@ describe('Testing Hue API', function() {
   });
 
   it('Should turn on all lights', function(done) {
-    let Hue = require('./../index.js');
-
-    Hue.config({
-      ip: process.env.IP,
-      username: process.env.USERNAME
-    });
-
-    return Hue.turnOnAll()
+    return hue.turnOnAll()
       .then(result => {
         assert.equal(result, 'All lights successfully turned on.');
         done();
