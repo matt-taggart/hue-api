@@ -1,5 +1,4 @@
-const config = require('./methods/config.js'),
-      getLights = require('./methods/getLights.js'),
+const getLights = require('./methods/getLights.js'),
       getLightById = require('./methods/getLightById.js'),
       turnOn = require('./methods/turnOn.js'),
       turnOnAll = require('./methods/turnOnAll.js'),
@@ -7,8 +6,7 @@ const config = require('./methods/config.js'),
       turnOffAll = require('./methods/turnOffAll.js'),
       setColor = require('./methods/setColor.js');
 
-const Hue = {
-  config,
+const HueProto = {
   getLights,
   getLightById,
   turnOn,
@@ -18,4 +16,9 @@ const Hue = {
   setColor
 };
 
-module.exports = Object.create(Hue);
+module.exports = function Hue(input) {
+  return Object.assign(Object.create(HueProto), {
+    ip: input.ip,
+    username: input.username
+  });
+};

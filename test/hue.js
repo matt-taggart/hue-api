@@ -6,15 +6,14 @@ describe('Testing Hue API', function() {
     require('dotenv').config({ silent: false });
   });
 
-  it('Should get all lights', function(done) {
-    let Hue = require('./../index.js');
-
-    Hue.config({
+  it.only('Should get all lights', function(done) {
+    const Hue = require('./../index.js');
+    const hue = Hue({
       ip: process.env.IP,
       username: process.env.USERNAME
     });
 
-    return Hue.getLights()
+    return hue.getLights()
       .then(results => {
         assert.property(results, '1');
         assert.deepProperty(results, '1.state');
@@ -25,7 +24,8 @@ describe('Testing Hue API', function() {
   });
 
   it('Should get light by id', function(done) {
-    let Hue = require('./../index.js');
+    const hue = require('./../index.js');
+    const Hue = hue();
 
     Hue.config({
       ip: process.env.IP,
@@ -41,7 +41,8 @@ describe('Testing Hue API', function() {
   });
 
   it('Should turn on light with id of 1', function(done) {
-    let Hue = require('./../index.js');
+    const hue = require('./../index.js');
+    const Hue = hue();
 
     Hue.config({
       ip: process.env.IP,
@@ -75,7 +76,7 @@ describe('Testing Hue API', function() {
   });
 
   it('Should set colors of light 1', function(done) {
-    let Hue = require('./../index.js');
+    let hue = require('./../index.js');
 
     Hue.config({
       ip: process.env.IP,
