@@ -11,28 +11,34 @@ const setColor = function setColor(args) {
     let lights = id;
     let params;
 
-    const executeAll = lights.reduce((prev, next, key, arr) => {
+    const setAll = () => {
+      return lights
+        .map((current, key, arr) => {
+            params = {
+              method: 'PUT',
+              uri: `http://${this.ip}/api/${this.username}/lights/${arr[key]}/state`,
+              body: {
+                "sat": args.sat,
+                "bri": args.bri,
+                "hue": args.hue
+              },
+              json: true
+            };
 
-      params = {
-        method: 'PUT',
-        uri: `http://${this.ip}/api/${this.username}/lights/${arr[key]}/state`,
-        body: {
-          "sat": args.sat,
-          "bri": args.bri,
-          "hue": args.hue
-        },
-        json: true
-      };
-
-      return prev.then(request(params));
-
-    }, Promise.resolve());
+            return request(params);
+        })
+        .reduce((prev, next) => {
+          return prev.then(() => {
+            return next;
+          });
+        });
+    };
 
     const success = () => {
       return 'Successfully changed lights.';
     };
 
-    return executeAll
+    return setAll()
       .then(success)
       .catch(err => {
         throw err;

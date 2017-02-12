@@ -7,9 +7,15 @@ const turnOnAll = function turnOnAll() {
   const executeAll = function executeAll(response) {
     const lights = Object.keys(response);
 
-    return lights.reduce((prev, next, key, arr) => {
-      return prev.then(turnOn(arr[key]));
-    }, Promise.resolve());
+    return lights
+      .map((current, key, arr) => {
+        return turnOn(arr[key]);
+      })
+      .reduce((prev, next) => {
+        return prev.then(() => {
+          return next;
+        });
+      }, Promise.resolve());
   };
 
   const success = () => {
