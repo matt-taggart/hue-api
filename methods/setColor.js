@@ -1,4 +1,5 @@
 const request = require('request-promise');
+const errorHandler = require('./../utils/errorHandler.js');
 
 const setColor = function setColor(args) {
   let id = args.id;
@@ -30,7 +31,7 @@ const setColor = function setColor(args) {
         .reduce((prev, next) => {
           return prev.then(() => {
             return next;
-          });
+          }).then(errorHandler);
         });
     };
 
