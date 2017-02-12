@@ -11,9 +11,6 @@ describe('Testing Hue API', function() {
 
   before(function() {
     require('dotenv').config({ silent: false });
-  });
-
-  beforeEach(function() {
     hue = Hue({
       ip: process.env.IP,
       username: process.env.USERNAME
