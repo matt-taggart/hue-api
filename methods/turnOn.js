@@ -2,9 +2,9 @@ const request = require('request-promise');
 
 const turnOn = function turnOn(id) {
   if (!id) {
-    throw new Error("Must provide light id(s) as an argument.");
+    throw new Error("Must provide light id as an argument.");
   }
-  
+
   let params = {
     method: 'PUT',
     uri: `http://${this.ip}/api/${this.username}/lights/${id}/state`,
