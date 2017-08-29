@@ -8,8 +8,8 @@ Hue.config({
 
 let count = 0;
 
-let display = setInterval(function() {
-  let random = Math.floor(Math.random() * 65535);
+const display = setInterval(function() {
+  const random = Math.floor(Math.random() * 65535);
 
   if (count < 10) {
     Hue.setColor({
